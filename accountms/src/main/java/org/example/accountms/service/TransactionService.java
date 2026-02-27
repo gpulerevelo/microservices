@@ -1,19 +1,17 @@
 package org.example.accountms.service;
 
-import org.example.accountms.model.Transaction;
-import org.example.accountms.dto.TransactionReportDTO;
+import org.example.accountms.model.dto.BankStatementDto;
+import org.example.accountms.model.dto.TransactionDto;
+import org.springframework.data.repository.query.Param;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 public interface TransactionService {
-    Transaction saveTransaction(Transaction transaction);
 
-    Transaction getTransactionById(Long transactionId);
-
-    List<Transaction> getAllTransactions();
-
-    void deleteTransactionById(Long transactionId);
-
-    List<TransactionReportDTO> getTransactionsByClientIdAndDateRange(Long clientId, LocalDate startDate, LocalDate endDate);
+    public List<TransactionDto> getAll();
+    public TransactionDto getById(Long id);
+    public TransactionDto create(TransactionDto transactionDto);
+    public List<BankStatementDto> getAllByAccountClientIdAndDateBetween(Long clientId, @Param("dateTransactionStart") Date dateTransactionStart, @Param("dateTransactionEnd") Date dateTransactionEnd);
+    public TransactionDto getLastByAccountId(Long accountId);
 }

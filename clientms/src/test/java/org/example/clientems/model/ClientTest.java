@@ -16,7 +16,7 @@ public class ClientTest {
 
         // Test setStatus and getStatus methods
         Boolean status = true;
-        client.setStatus(status);
-        assertEquals(status, client.getStatus(), "Status getter/setter test failed");
+        client.setActive(status);
+        assertEquals(status, client.isActive(), "Status getter/setter test failed");
     }
 }

@@ -1,16 +1,17 @@
 package org.example.accountms.controller;
 
-import org.example.accountms.messaging.TransactionMessageProducer;
-import org.example.accountms.model.Transaction;
+import org.example.accountms.model.dto.BankStatementDto;
+import org.example.accountms.model.dto.TransactionDto;
 import org.example.accountms.service.TransactionService;
-import org.springframework.http.HttpStatus;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/movimientos")
+@RequestMapping("/api/transactions")
 public class TransactionController {
 
     private final TransactionService transactionService;
@@ -19,49 +20,27 @@ public class TransactionController {
         this.transactionService = transactionService;
     }
 
-    @PostMapping
-    public ResponseEntity<Transaction> createTransaction(@RequestBody Transaction transaction) {
-        Transaction savedTransaction = transactionService.saveTransaction(transaction);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedTransaction);
+    public ResponseEntity<List<TransactionDto>> getAll(){
+        // api/transactions
+        // Get all transactions
+        return null;
     }
 
-    @PutMapping("/{transactionId}")
-    public ResponseEntity<Transaction> updateTransaction(@PathVariable Long transactionId, @RequestBody Transaction transactionDetails) {
-        Transaction existingTransaction = transactionService.getTransactionById(transactionId);
-        if (existingTransaction != null) {
-            existingTransaction.setAccountNumber(transactionDetails.getAccountNumber());
-            existingTransaction.setCreatedOn(transactionDetails.getCreatedOn());
-            existingTransaction.setAmount(transactionDetails.getAmount());
-            existingTransaction.setTransactionType(transactionDetails.getTransactionType());
-            existingTransaction.setBalance(transactionDetails.getBalance());
-
-            Transaction updatedTransaction = transactionService.saveTransaction(existingTransaction);
-            return ResponseEntity.ok(updatedTransaction);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<TransactionDto> get(@PathVariable Long id){
+        // api/transactions/{id}
+        // Get transactions by id
+        return null;
     }
 
-    @GetMapping("/{transactionId}")
-    public ResponseEntity<Transaction> getTransactionById(@PathVariable Long transactionId) {
-        Transaction transaction = transactionService.getTransactionById(transactionId);
-        if (transaction != null) {
-            return ResponseEntity.ok(transaction);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<TransactionDto> create(@RequestBody TransactionDto transactionDto){
+        // api/transactions
+        // Create transactions
+        return null;
     }
 
-    @GetMapping
-    public ResponseEntity<List<Transaction>> getAllTransactions() {
-        List<Transaction> transactions = transactionService.getAllTransactions();
-        return ResponseEntity.ok(transactions);
+    public ResponseEntity<List<BankStatementDto>> report(@PathVariable Long clientId, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateTransactionStart, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateTransactionEnd) {
+        // api/transactions/clients/{clientId}/report
+        // Get report
+        return null;
     }
-
-    @DeleteMapping("/{transactionId}")
-    public ResponseEntity<Void> deleteTransaction(@PathVariable Long transactionId) {
-        transactionService.deleteTransactionById(transactionId);
-        return ResponseEntity.noContent().build();
-    }
-
 }

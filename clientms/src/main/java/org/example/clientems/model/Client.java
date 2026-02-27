@@ -1,29 +1,18 @@
 package org.example.clientems.model;
 
-import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 
 @Entity
-@Table(name = "clients")
-@PrimaryKeyJoinColumn(name = "client_id")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class Client extends Person {
-
     private String password;
-
-    private Boolean status;
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
+    private boolean isActive;
 }

@@ -17,7 +17,7 @@ public class TransactionMessageProducer {
 
     public void sendMessage(Account account) {
         TransactionMessage transactionMessage = new TransactionMessage();
-        transactionMessage.setAccountNumber(account.getAccountNumber());
+        transactionMessage.setAccountNumber(account.getNumber());
         transactionMessage.setClientId(account.getClientId());
         rabbitTemplate.convertAndSend("transactionQueue", transactionMessage);
     }

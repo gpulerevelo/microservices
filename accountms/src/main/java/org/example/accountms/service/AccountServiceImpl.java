@@ -1,11 +1,11 @@
 package org.example.accountms.service;
 
-import org.example.accountms.model.Account;
+import org.example.accountms.model.dto.AccountDto;
+import org.example.accountms.model.dto.PartialAccountDto;
 import org.example.accountms.repository.AccountRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -17,23 +17,39 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account saveAccount(Account account) {
-        return accountRepository.save(account);
+    public List<AccountDto> getAll() {
+        // Get all accounts
+        return null;
     }
 
     @Override
-    public Account getAccountById(String accountNumber) {
-        Optional<Account> optionalAccount = accountRepository.findById(accountNumber);
-        return optionalAccount.orElse(null);
+    public AccountDto getById(Long id) {
+        // Get accounts by id
+        return null;
     }
 
     @Override
-    public List<Account> getAllAccounts() {
-        return accountRepository.findAll();
+    public AccountDto create(AccountDto accountDto) {
+        // Create account
+        return null;
     }
 
     @Override
-    public void deleteAccountById(String accountNumber) {
-        accountRepository.deleteById(accountNumber);
+    public AccountDto update(AccountDto accountDto) {
+        // Update account
+        return null;
     }
+
+    @Override
+    public AccountDto partialUpdate(Long id, PartialAccountDto partialAccountDto) {
+        // Partial update account
+        return null;
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        // Delete account
+    }
+
 }
+

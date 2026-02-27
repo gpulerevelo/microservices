@@ -11,10 +11,5 @@ import java.util.Optional;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
-    Optional<Transaction> findTopByAccountNumberOrderByCreatedOnDesc(String accountNumber);
-
-    @Query("SELECT t FROM Transaction t JOIN t.account a WHERE a.clientId = :clientId " +
-            "AND t.createdOn BETWEEN :startDate AND :endDate")
-    List<Transaction> findByClientIdAndDateRange(Long clientId, LocalDateTime startDate, LocalDateTime endDate);
 
 }

@@ -1,6 +1,7 @@
 package org.example.clientems.controller;
 
-import org.example.clientems.model.Client;
+import org.example.clientems.model.dto.ClientDto;
+import org.example.clientems.model.dto.PartialClientDto;
 import org.example.clientems.service.ClientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,65 +10,62 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/clientes")
+@RequestMapping("/api/clients")
 public class ClientController {
 
     private final ClientService clientService;
 
-    public ClientController(ClientService personaService) {
-        this.clientService = personaService;
+    public ClientController(ClientService clientService) {
+        this.clientService = clientService;
     }
 
     @GetMapping
-    public ResponseEntity<List<Client>> getAllClients() {
-        List<Client> clients = clientService.getAllClients();
+    public ResponseEntity<List<ClientDto>> getAll() {
+        // api/clients
+        // Get all clients
+        List<ClientDto> clients = clientService.getAll();
         return ResponseEntity.ok(clients);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ClientDto> get(@PathVariable Long id) {
+        // api/clients/{id}
+        // Get clients by id
+        ClientDto clientDto = clientService.getById(id);
+        return ResponseEntity.ok(clientDto);
+    }
+
     @PostMapping
-    public ResponseEntity<Client> createClient(@RequestBody Client client) {
-        Client savedClient = clientService.saveClient(client);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedClient);
+    public ResponseEntity<ClientDto> create(@RequestBody ClientDto clientDto) {
+        // api/clients
+        // Create client
+        ClientDto createdClient = clientService.create(clientDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdClient);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateClient(@PathVariable Long id, @RequestBody Client client) {
-        Client existingClient = clientService.getClientById(id);
-        if (existingClient != null) {
-            existingClient.setName(client.getName());
-            existingClient.setGenre(client.getGenre());
-            existingClient.setAge(client.getAge());
-            existingClient.setIdentification(client.getIdentification());
-            existingClient.setAddress(client.getAddress());
-            existingClient.setPhone(client.getPhone());
-            existingClient.setPassword(client.getPassword());
-            existingClient.setStatus(client.getStatus());
-
-            Client updatedClient = clientService.saveClient(existingClient);
-            return ResponseEntity.ok(updatedClient);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente no encontrado con el id: " + id);
-        }
+    public ResponseEntity<ClientDto> update(@PathVariable Long id, @RequestBody ClientDto clientDto) {
+        // api/clients/{id}
+        // Update client
+        clientDto.setId(id);
+        ClientDto updatedClient = clientService.update(clientDto);
+        return ResponseEntity.ok(updatedClient);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getAccountById(@PathVariable Long id) {
-        Client client = this.clientService.getClientById(id);
-        if (client != null) {
-            return ResponseEntity.ok(client);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente no encontrado con el id: " + id);
-        }
+    @PatchMapping("/{id}")
+    public ResponseEntity<ClientDto> partialUpdate(@PathVariable Long id, @RequestBody PartialClientDto partialClientDto) {
+        // api/clients/{id}
+        // Partial update client
+        ClientDto updatedClient = clientService.partialUpdate(id, partialClientDto);
+        return ResponseEntity.ok(updatedClient);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteClient(@PathVariable Long id) {
-        boolean isDeleted = this.clientService.deleteClientById(id);
-        if (isDeleted) {
-            return ResponseEntity.status(HttpStatus.OK).body("Cliente eliminado satisfactoriamente");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente no encontrado");
-        }
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        // api/clients/{id}
+        // Delete client
+        clientService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

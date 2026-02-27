@@ -1,0 +1,11 @@
+package org.example.accountms.model.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
+public class PartialAccountDto {
+
+    private boolean isActive;
+}

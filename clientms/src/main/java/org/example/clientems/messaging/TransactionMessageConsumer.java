@@ -17,7 +17,7 @@ public class TransactionMessageConsumer {
     @RabbitListener(queues = "transactionQueue")
     public void consumeMessage(TransactionMessage transactionMessage){
         Client client = new Client();
-        client.setPersonId(transactionMessage.getClientId());
-        this.clientService.updateAccount(transactionMessage.getAccountNumber(), client.getPersonId());
+        client.setId(transactionMessage.getClientId());
+//        this.clientService.updateAccount(transactionMessage.getAccountNumber(), client.getId());
     }
 }
