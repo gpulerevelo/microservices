@@ -1,5 +1,6 @@
 package org.example.clientems.service;
 
+import org.example.clientems.client.AsyncAccountServiceClient;
 import org.example.clientems.exception.ResourceNotFoundException;
 import org.example.clientems.model.Client;
 import org.example.clientems.model.dto.ClientDto;
@@ -14,9 +15,11 @@ import java.util.stream.Collectors;
 public class ClientServiceImpl implements ClientService {
 
     private final ClientRepository clientRepository;
+    private final AsyncAccountServiceClient asyncAccountServiceClient;
 
-    public ClientServiceImpl(ClientRepository clientRepository) {
+    public ClientServiceImpl(ClientRepository clientRepository, AsyncAccountServiceClient asyncAccountServiceClient) {
         this.clientRepository = clientRepository;
+        this.asyncAccountServiceClient = asyncAccountServiceClient;
     }
 
     @Override
@@ -41,6 +44,10 @@ public class ClientServiceImpl implements ClientService {
         // Create client
         Client client = convertToEntity(clientDto);
         Client savedClient = clientRepository.save(client);
+
+        // Asynchronously notify accountms to create a default account
+        asyncAccountServiceClient.notifyClientCreated(savedClient.getId());
+
         return convertToDto(savedClient);
     }
 

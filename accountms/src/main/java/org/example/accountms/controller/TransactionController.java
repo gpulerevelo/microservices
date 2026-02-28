@@ -4,6 +4,7 @@ import org.example.accountms.model.dto.BankStatementDto;
 import org.example.accountms.model.dto.TransactionDto;
 import org.example.accountms.service.TransactionService;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,27 +21,34 @@ public class TransactionController {
         this.transactionService = transactionService;
     }
 
-    public ResponseEntity<List<TransactionDto>> getAll(){
+    @GetMapping
+    public ResponseEntity<List<TransactionDto>> getAll() {
         // api/transactions
         // Get all transactions
-        return null;
+        return ResponseEntity.ok(transactionService.getAll());
     }
 
-    public ResponseEntity<TransactionDto> get(@PathVariable Long id){
+    @GetMapping("/{id}")
+    public ResponseEntity<TransactionDto> get(@PathVariable Long id) {
         // api/transactions/{id}
         // Get transactions by id
-        return null;
+        return ResponseEntity.ok(transactionService.getById(id));
     }
 
-    public ResponseEntity<TransactionDto> create(@RequestBody TransactionDto transactionDto){
+    @PostMapping
+    public ResponseEntity<TransactionDto> create(@RequestBody TransactionDto transactionDto) {
         // api/transactions
         // Create transactions
-        return null;
+        return ResponseEntity.status(HttpStatus.CREATED).body(transactionService.create(transactionDto));
     }
 
-    public ResponseEntity<List<BankStatementDto>> report(@PathVariable Long clientId, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateTransactionStart, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateTransactionEnd) {
+    @GetMapping("/clients/{clientId}/report")
+    public ResponseEntity<List<BankStatementDto>> report(
+            @PathVariable Long clientId,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateTransactionStart,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateTransactionEnd) {
         // api/transactions/clients/{clientId}/report
         // Get report
-        return null;
+        return ResponseEntity.ok(transactionService.getAllByAccountClientIdAndDateBetween(clientId, dateTransactionStart, dateTransactionEnd));
     }
 }
